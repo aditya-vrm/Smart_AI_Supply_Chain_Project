@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { FileTerminal, FileSpreadsheet, Download, BarChart2, ShieldCheck, Cpu } from 'lucide-react';
+import { FileText, FileSpreadsheet, Download } from 'lucide-react';
 
 const Reports = () => {
   const [summary, setSummary] = useState(null);
@@ -15,7 +15,7 @@ const Reports = () => {
         const res = await api.get('/reports/summary');
         setSummary(res.data);
       } catch (err) {
-        console.error('Failed to load intelligence summary:', err);
+        console.error('Failed to load summary:', err);
       } finally {
         setLoading(false);
       }
@@ -30,7 +30,7 @@ const Reports = () => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'VORTEX_Supply_Intelligence_Matrix.xlsx');
+      link.setAttribute('download', 'Supply_Chain_Intelligence_Report.xlsx');
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -48,7 +48,7 @@ const Reports = () => {
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'VORTEX_Supply_Intelligence_Matrix.pdf');
+      link.setAttribute('download', 'Supply_Chain_Executive_Report.pdf');
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -60,58 +60,59 @@ const Reports = () => {
   };
 
   return (
-    <div className="space-y-6 font-sans">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
         <div>
-          <h2 className="text-xl font-bold font-mono tracking-wider text-white uppercase flex items-center gap-2">
-            <FileTerminal className="w-5 h-5 text-indigo-400" />
-            INTELLIGENCE DISPATCH CONSOLE
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <FileText className="w-5 h-5 text-cobalt-400" />
+            Reports & Analytics
           </h2>
-          <p className="text-xs font-mono text-slate-400 mt-1">Compile and stream multi-tab Excel workbooks and executive PDF operational telemetry</p>
+          <p className="text-xs text-slate-400 mt-1">Export formatted Excel workbooks and executive PDF intelligence briefs</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={handleDownloadExcel}
             disabled={downloadingExcel}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold uppercase tracking-wider hover:bg-emerald-500/30 transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)] disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cobalt-600/20 text-cobalt-300 border border-cobalt-500/40 text-xs font-semibold hover:bg-cobalt-600/30 transition-all shadow-[0_0_15px_rgba(8,100,232,0.2)] disabled:opacity-50"
           >
-            <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-            {downloadingExcel ? 'COMPILING XLSX...' : 'EXPORT EXCEL (.XLSX)'}
+            <FileSpreadsheet className="w-4 h-4 text-neon" />
+            {downloadingExcel ? 'Exporting XLSX...' : 'Export Excel (.xlsx)'}
           </button>
           <button
             onClick={handleDownloadPdf}
             disabled={downloadingPdf}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-mono font-bold uppercase tracking-wider hover:bg-cyan-500/30 transition-all shadow-[0_0_15px_rgba(6,182,212,0.2)] disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cobalt-600 text-white text-xs font-semibold hover:bg-cobalt-500 transition-all shadow-[0_0_15px_rgba(8,100,232,0.3)] disabled:opacity-50"
           >
-            <FileTerminal className="w-4 h-4 text-cyan-400" />
-            {downloadingPdf ? 'COMPILING PDF...' : 'EXPORT PDF (.PDF)'}
+            <FileText className="w-4 h-4" />
+            {downloadingPdf ? 'Exporting PDF...' : 'Export PDF (.pdf)'}
           </button>
         </div>
       </div>
 
-      {/* Telemetry Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono">
-        <div className="bg-[#0D131F]/90 backdrop-blur-md p-6 rounded-xl border border-slate-800 shadow-xl">
-          <span className="text-xs text-slate-400 uppercase tracking-wider block">CURRENT INVENTORY VALUATION</span>
-          <span className="text-2xl font-bold text-white tabular-nums mt-2 block">
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Inventory Valuation</span>
+          <span className="text-2xl font-mono font-bold text-neon tabular-nums mt-2 block">
             ${summary ? summary.total_valuation.toLocaleString(undefined, { minimumFractionDigits: 2 }) : '0.00'}
           </span>
-          <span className="text-[11px] text-cyan-400 mt-1 block">Live warehouse valuation</span>
+          <span className="text-[11px] text-slate-400 mt-1 block">Live warehouse stock value</span>
         </div>
 
-        <div className="bg-[#0D131F]/90 backdrop-blur-md p-6 rounded-xl border border-slate-800 shadow-xl">
-          <span className="text-xs text-slate-400 uppercase tracking-wider block">TOTAL GROSS REVENUE</span>
-          <span className="text-2xl font-bold text-white tabular-nums mt-2 block">
+        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Gross Sales Revenue</span>
+          <span className="text-2xl font-mono font-bold text-white tabular-nums mt-2 block">
             ${summary ? summary.total_sales_revenue.toLocaleString(undefined, { minimumFractionDigits: 2 }) : '0.00'}
           </span>
-          <span className="text-[11px] text-emerald-400 mt-1 block">
+          <span className="text-[11px] text-cobalt-400 mt-1 block">
             Across {summary?.total_units_sold.toLocaleString()} units transacted
           </span>
         </div>
 
-        <div className="bg-[#0D131F]/90 backdrop-blur-md p-6 rounded-xl border border-slate-800 shadow-xl">
-          <span className="text-xs text-slate-400 uppercase tracking-wider block">AI FORECAST ACCURACY</span>
-          <div className="flex items-center gap-4 mt-2">
+        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">AI Forecast Quality</span>
+          <div className="flex items-center gap-4 mt-2 font-mono">
             <div>
               <span className="text-[11px] text-slate-500 block uppercase">MEAN MAE</span>
               <span className="text-lg font-bold text-white tabular-nums">
@@ -120,70 +121,70 @@ const Reports = () => {
             </div>
             <div>
               <span className="text-[11px] text-slate-500 block uppercase">MEAN MAPE</span>
-              <span className="text-lg font-bold text-emerald-400 tabular-nums">
+              <span className="text-lg font-bold text-neon tabular-nums">
                 {summary?.forecast_accuracy?.avg_mape || '0.00'}%
               </span>
             </div>
           </div>
           <span className="text-[11px] text-slate-400 mt-1 block">
-            Aggregated over {summary?.forecast_accuracy?.total_evaluations} ML evaluation runs
+            Across {summary?.forecast_accuracy?.total_evaluations} ML evaluation runs
           </span>
         </div>
       </div>
 
       {/* Export Format Panels */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono">
-        <div className="bg-[#0D131F]/90 backdrop-blur-md p-6 rounded-xl border border-slate-800 shadow-xl flex flex-col justify-between">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                <FileSpreadsheet className="w-5 h-5" />
+              <div className="p-2.5 rounded-lg bg-cobalt-600/20 text-cobalt-400 border border-cobalt-500/30">
+                <FileSpreadsheet className="w-5 h-5 text-neon" />
               </div>
-              <h3 className="text-sm font-bold text-white uppercase">SPREADSHEET WORKBOOK (.XLSX)</h3>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Excel Workbook (.xlsx)</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Programmatically formatted multi-sheet binary via <code>openpyxl</code>:
+              Automated multi-sheet spreadsheet report generated via <code>openpyxl</code>:
             </p>
             <ul className="list-disc pl-5 mt-2 space-y-1 text-xs text-slate-300">
-              <li>Executive Summary & operational KPIs</li>
-              <li>Complete Inventory Valuation & health status</li>
-              <li>Smart alerts and exact calculated reorder quantities</li>
+              <li>Executive Summary with operational metrics and KPI benchmarks</li>
+              <li>Inventory Valuation breakdown with health status indicators</li>
+              <li>Active stock alerts and exact algorithmic reorder volumes</li>
             </ul>
           </div>
           <button
             onClick={handleDownloadExcel}
             disabled={downloadingExcel}
-            className="mt-6 w-full py-2.5 px-3 rounded-lg border border-emerald-500/30 bg-emerald-950/20 text-xs font-bold uppercase tracking-wider text-emerald-300 hover:bg-emerald-950/40 flex items-center justify-center gap-2 transition-all"
+            className="mt-6 w-full py-2.5 px-3 rounded-lg border border-cobalt-500/40 bg-cobalt-950/20 text-xs font-semibold uppercase tracking-wider text-cobalt-300 hover:bg-cobalt-900/40 flex items-center justify-center gap-2 transition-all"
           >
-            <Download className="w-4 h-4" />
-            Dispatch Excel Workbook
+            <Download className="w-4 h-4 text-neon" />
+            Download Excel Spreadsheet
           </button>
         </div>
 
-        <div className="bg-[#0D131F]/90 backdrop-blur-md p-6 rounded-xl border border-slate-800 shadow-xl flex flex-col justify-between">
+        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
-                <FileTerminal className="w-5 h-5" />
+              <div className="p-2.5 rounded-lg bg-cobalt-600/20 text-cobalt-400 border border-cobalt-500/30">
+                <FileText className="w-5 h-5 text-cobalt-400" />
               </div>
-              <h3 className="text-sm font-bold text-white uppercase">OPERATIONAL BRIEFING DOCUMENT (.PDF)</h3>
+              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Executive PDF Report (.pdf)</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Executive vector printable report rendered via <code>reportlab</code>:
+              Printable PDF document compiled via <code>reportlab</code>:
             </p>
             <ul className="list-disc pl-5 mt-2 space-y-1 text-xs text-slate-300">
-              <li>Enterprise supply chain performance summary</li>
-              <li>Critical stock alert warnings and recommended purchase volumes</li>
-              <li>Product catalog inventory valuation breakdown</li>
+              <li>Comprehensive operational summary and executive KPIs</li>
+              <li>Stock reorder recommendations with supplier details</li>
+              <li>Category valuation breakdown and inventory health overview</li>
             </ul>
           </div>
           <button
             onClick={handleDownloadPdf}
             disabled={downloadingPdf}
-            className="mt-6 w-full py-2.5 px-3 rounded-lg border border-cyan-500/30 bg-cyan-950/20 text-xs font-bold uppercase tracking-wider text-cyan-300 hover:bg-cyan-950/40 flex items-center justify-center gap-2 transition-all"
+            className="mt-6 w-full py-2.5 px-3 rounded-lg bg-cobalt-600 hover:bg-cobalt-500 text-xs font-semibold uppercase tracking-wider text-white flex items-center justify-center gap-2 transition-all shadow-[0_0_12px_rgba(8,100,232,0.3)]"
           >
             <Download className="w-4 h-4" />
-            Dispatch PDF Document
+            Download PDF Report
           </button>
         </div>
       </div>

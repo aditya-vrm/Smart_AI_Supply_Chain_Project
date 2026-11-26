@@ -1,30 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { 
-  Activity, 
-  Layers, 
-  Cpu, 
-  Database, 
-  Zap, 
-  ShieldAlert, 
-  Network, 
-  FileTerminal, 
+  LayoutDashboard, 
+  Package, 
+  Boxes, 
+  ShoppingCart, 
+  TrendingUp, 
+  AlertTriangle, 
+  Users, 
+  FileText, 
   LogOut,
-  Radio,
-  Terminal,
-  Clock
+  Zap
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const navigation = [
-  { name: 'Command Deck', href: '/', icon: Activity },
-  { name: 'Item Catalog', href: '/products', icon: Layers },
-  { name: 'Stock Telemetry', href: '/inventory', icon: Database },
-  { name: 'Order Ledger', href: '/sales', icon: Zap },
-  { name: 'AI Demand Matrix', href: '/forecasting', icon: Cpu },
-  { name: 'Anomaly Center', href: '/alerts', icon: ShieldAlert },
-  { name: 'Vendor Grid', href: '/suppliers', icon: Network },
-  { name: 'Intelligence Export', href: '/reports', icon: FileTerminal },
+  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Products', href: '/products', icon: Package },
+  { name: 'Inventory', href: '/inventory', icon: Boxes },
+  { name: 'Sales', href: '/sales', icon: ShoppingCart },
+  { name: 'Forecasting', href: '/forecasting', icon: TrendingUp },
+  { name: 'Alerts', href: '/alerts', icon: AlertTriangle },
+  { name: 'Suppliers', href: '/suppliers', icon: Users },
+  { name: 'Reports', href: '/reports', icon: FileText },
 ];
 
 const MainLayout = ({ children }) => {
@@ -38,71 +36,33 @@ const MainLayout = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#080C14] text-slate-100 flex flex-col font-sans">
-      {/* Top Command Telemetry Header */}
-      <header className="sticky top-0 z-40 bg-[#0D131F]/90 backdrop-blur-md border-b border-slate-800/80 shadow-md">
-        {/* Upper Micro-Status Bar */}
-        <div className="border-b border-slate-800/50 px-6 py-2 flex items-center justify-between text-[11px] font-mono text-slate-400">
-          <div className="flex items-center gap-5">
-            <div className="flex items-center gap-1.5 text-emerald-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10B981]"></span>
-              <span>SYSTEM: ONLINE</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-1.5 text-cyan-400">
-              <Terminal className="w-3 h-3" />
-              <span>ML CLUSTER: OPTIMAL</span>
-            </div>
-            <div className="hidden md:flex items-center gap-1.5 text-slate-400">
-              <Database className="w-3 h-3 text-indigo-400" />
-              <span>RDBMS: MYSQL ACTIVE</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-slate-400">
-              <Clock className="w-3 h-3" />
-              <span>{new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-            </div>
-            <div className="border-l border-slate-800 pl-4 flex items-center gap-3">
-              <span className="text-slate-300 font-semibold">{user?.username || 'Commander'}</span>
-              <button
-                onClick={handleLogout}
-                title="Disconnect Session"
-                className="inline-flex items-center gap-1 text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 px-2 py-0.5 rounded transition-colors text-[11px]"
-              >
-                <LogOut className="w-3 h-3" />
-                <span>Exit</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Branding & Navigation Row */}
-        <div className="px-6 py-3 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          {/* Logo & Brand */}
+    <div className="min-h-screen bg-[#0A0F18] text-slate-100 flex flex-col font-sans">
+      {/* Sleek Top Navigation Header */}
+      <header className="sticky top-0 z-40 bg-[#0E1522]/95 backdrop-blur-md border-b border-slate-800 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+          
+          {/* Brand Logo & Title */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-emerald-500 via-cyan-600 to-indigo-600 p-[1.5px] shadow-[0_0_15px_rgba(16,185,129,0.3)]">
-              <div className="w-full h-full bg-[#080C14] rounded-[7px] flex items-center justify-center">
-                <Radio className="w-4 h-4 text-emerald-400" />
-              </div>
+            <div className="w-10 h-10 rounded-xl bg-cobalt flex items-center justify-center text-neon shadow-[0_0_15px_rgba(8,100,232,0.4)]">
+              <Zap className="w-5 h-5 fill-current" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-base tracking-widest text-white uppercase font-mono">
-                  VORTEX
+                <span className="font-bold text-base tracking-tight text-white">
+                  Supply<span className="text-neon">AI</span>
                 </span>
-                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                  v2.4-AI
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-cobalt/20 text-cobalt-light border border-cobalt/40 font-medium">
+                  SaaS
                 </span>
               </div>
-              <span className="text-[10px] font-mono tracking-wider text-slate-500 uppercase block leading-none mt-0.5">
-                Autonomous Supply Intelligence
-              </span>
+              <p className="text-[11px] text-slate-400">
+                Demand Forecasting & Inventory Optimization
+              </p>
             </div>
           </div>
 
-          {/* Horizontal Navigation Pills (Replaces vertical sidebar) */}
-          <nav className="flex items-center gap-1 overflow-x-auto py-1 scrollbar-none">
+          {/* Clean Navigation Links with Cobalt and Neon Active States */}
+          <nav className="hidden md:flex items-center gap-1.5 overflow-x-auto py-1">
             {navigation.map((item) => {
               const Icon = item.icon;
               return (
@@ -110,30 +70,68 @@ const MainLayout = ({ children }) => {
                   key={item.name}
                   to={item.href}
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono tracking-wide uppercase transition-all whitespace-nowrap ${
+                    `flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                       isActive
-                        ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 shadow-[0_0_12px_rgba(16,185,129,0.2)] font-semibold'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+                        ? 'bg-cobalt text-white shadow-md shadow-cobalt/30 font-semibold'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                     }`
                   }
                 >
-                  <Icon className="w-3.5 h-3.5 flex-shrink-0" />
+                  <Icon className="w-4 h-4 flex-shrink-0" />
                   <span>{item.name}</span>
                 </NavLink>
               );
             })}
           </nav>
+
+          {/* User Profile & Logout */}
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:block text-right">
+              <div className="text-xs font-semibold text-white">{user?.username || 'Admin'}</div>
+              <div className="text-[11px] text-slate-400 truncate max-w-[140px]">{user?.email}</div>
+            </div>
+            <button
+              onClick={handleLogout}
+              title="Sign Out"
+              className="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800/80 rounded-lg transition-colors border border-transparent hover:border-slate-700"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation Row */}
+        <div className="md:hidden px-4 pb-2.5 pt-1 overflow-x-auto flex items-center gap-1 border-t border-slate-800/60">
+          {navigation.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.name}
+                to={item.href}
+                className={({ isActive }) =>
+                  `flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium whitespace-nowrap ${
+                    isActive
+                      ? 'bg-cobalt text-white font-semibold'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  }`
+                }
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{item.name}</span>
+              </NavLink>
+            );
+          })}
         </div>
       </header>
 
-      {/* Main Content Viewport */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8">
+      {/* Main Page Body */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
 
-      {/* Futuristic Command Deck Footer */}
-      <footer className="border-t border-slate-900 bg-[#06090F] py-4 px-6 text-center text-xs font-mono text-slate-600">
-        VORTEX SUPPLY CHAIN INTELLIGENCE &bull; RANDOM FOREST & XGBOOST ENSEMBLE ENGINE &bull; ACTIVE NODE
+      {/* Clean Footer */}
+      <footer className="border-t border-slate-800/80 bg-[#080C14] py-4 text-center text-xs text-slate-500">
+        SupplyAI Demand Forecasting Platform &bull; Powered by FastAPI & React
       </footer>
     </div>
   );

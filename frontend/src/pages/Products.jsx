@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
 import Modal from '../components/Modal';
-import { Layers, Plus, Search, Edit2, Trash2, Filter } from 'lucide-react';
+import { Package, Plus, Search, Edit2, Trash2, Filter } from 'lucide-react';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -120,7 +120,7 @@ const Products = () => {
   };
 
   const handleDelete = async (productId, sku) => {
-    if (!window.confirm(`Confirm decommissioning of SKU [${sku}]? This removes all associated stock nodes.`)) {
+    if (!window.confirm(`Delete product ${sku}? This will remove its inventory entry.`)) {
       return;
     }
     try {
@@ -132,44 +132,45 @@ const Products = () => {
   };
 
   return (
-    <div className="space-y-6 font-sans">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
         <div>
-          <h2 className="text-xl font-bold font-mono tracking-wider text-white uppercase flex items-center gap-2">
-            <Layers className="w-5 h-5 text-cyan-400" />
-            CATALOG REGISTRY MATRIX
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <Package className="w-5 h-5 text-cobalt-400" />
+            Product Catalog
           </h2>
-          <p className="text-xs font-mono text-slate-400 mt-1">Manage SKU designations, unit valuations, and vendor assignments</p>
+          <p className="text-xs text-slate-400 mt-1">Manage SKUs, unit pricing, categories, and supplier assignments</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 text-xs font-mono font-bold uppercase tracking-wider hover:from-emerald-400 hover:to-cyan-400 transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cobalt-600 text-white text-xs font-semibold hover:bg-cobalt-500 transition-all shadow-[0_0_15px_rgba(8,100,232,0.3)] self-start sm:self-auto"
         >
-          <Plus className="w-4 h-4 text-slate-950" />
-          <span>REGISTER NEW SKU</span>
+          <Plus className="w-4 h-4" />
+          <span>Add Product</span>
         </button>
       </div>
 
-      {/* Dark Filter & Command Bar */}
-      <div className="bg-[#0D131F]/90 backdrop-blur-md p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* Filter & Search Bar */}
+      <div className="bg-[#0E1522] p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
         <form onSubmit={handleSearchSubmit} className="relative w-full sm:w-80">
           <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" />
           <input
             type="text"
-            placeholder="Search SKU code or designation..."
+            placeholder="Search SKU or product name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900 border border-slate-700/80 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900 border border-slate-700/80 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
           />
         </form>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <Filter className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-          <span className="text-xs font-mono text-slate-400 uppercase">Category:</span>
+          <Filter className="w-4 h-4 text-slate-400 flex-shrink-0" />
+          <span className="text-xs text-slate-400">Category:</span>
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-xs font-mono text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
           >
             <option value="All">All Categories ({categories.length})</option>
             {categories.map((c) => (
@@ -179,62 +180,62 @@ const Products = () => {
         </div>
       </div>
 
-      {/* Dark Products Table */}
-      <div className="bg-[#0D131F]/90 backdrop-blur-md rounded-xl border border-slate-800 overflow-hidden shadow-xl">
+      {/* Products Table */}
+      <div className="bg-[#0E1522] rounded-xl border border-slate-800 overflow-hidden shadow-xl">
         {loading ? (
           <div className="flex items-center justify-center h-48">
-            <div className="w-8 h-8 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-8 h-8 border-2 border-cobalt-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-12 text-slate-500 text-xs font-mono">
-            NO SKU NODES MATCHING SEARCH CRITERIA.
+          <div className="text-center py-12 text-slate-500 text-xs">
+            No products found matching your search.
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-slate-900/80 text-slate-400 border-b border-slate-800 uppercase tracking-wider">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-900/80 text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[11px]">
                 <tr>
                   <th className="py-3 px-4">SKU Code</th>
-                  <th className="py-3 px-4">Product Designation</th>
+                  <th className="py-3 px-4">Product Name</th>
                   <th className="py-3 px-4">Category</th>
-                  <th className="py-3 px-4 text-right">Unit Value</th>
-                  <th className="py-3 px-4">Vendor Partner</th>
-                  <th className="py-3 px-4 text-right">Commands</th>
+                  <th className="py-3 px-4 text-right">Unit Price</th>
+                  <th className="py-3 px-4">Supplier</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
+              <tbody className="divide-y divide-slate-800/60 font-sans">
                 {products.map((p) => (
                   <tr key={p.product_id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-4 font-bold text-cyan-400 tracking-wider">
+                    <td className="py-3 px-4 font-mono font-bold text-neon tracking-wider">
                       {p.sku_code}
                     </td>
                     <td className="py-3 px-4 font-medium text-white">
                       {p.product_name}
                     </td>
                     <td className="py-3 px-4">
-                      <span className="inline-block px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 text-[11px] font-mono border border-slate-700">
+                      <span className="inline-block px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 text-[11px] border border-slate-700">
                         {p.category}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right tabular-nums font-bold text-emerald-400">
+                    <td className="py-3 px-4 text-right font-mono font-bold text-white">
                       ${p.unit_price.toFixed(2)}
                     </td>
                     <td className="py-3 px-4 text-slate-400">
-                      {p.supplier?.supplier_name || <span className="text-slate-600 italic">Unassigned</span>}
+                      {p.supplier?.supplier_name || <span className="text-slate-600 italic">None</span>}
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => openEditModal(p)}
-                          className="p-1.5 rounded-md text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors"
-                          title="Modify SKU"
+                          className="p-1.5 rounded-md text-slate-400 hover:text-cobalt-400 hover:bg-slate-800 transition-colors"
+                          title="Edit Product"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDelete(p.product_id, p.sku_code)}
                           className="p-1.5 rounded-md text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors"
-                          title="Purge SKU"
+                          title="Delete Product"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -248,59 +249,59 @@ const Products = () => {
         )}
       </div>
 
-      {/* Dark Add / Edit Modal */}
+      {/* Add / Edit Modal */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingProduct ? `MODIFY SKU: ${editingProduct.sku_code}` : 'REGISTER NEW CATALOG SKU'}
+        title={editingProduct ? `Edit Product: ${editingProduct.sku_code}` : 'Add New Product'}
       >
         {formError && (
-          <div className="mb-4 p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs font-mono">
+          <div className="mb-4 p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs">
             {formError}
           </div>
         )}
 
-        <form onSubmit={handleFormSubmit} className="space-y-4 font-mono">
+        <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-slate-300 mb-1 uppercase">SKU Code *</label>
+              <label className="block text-xs text-slate-300 mb-1">SKU Code *</label>
               <input
                 type="text"
                 required
                 value={formData.sku_code}
                 onChange={(e) => setFormData({ ...formData, sku_code: e.target.value })}
                 placeholder="SKU-XXX-001"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white uppercase focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white uppercase focus:ring-2 focus:ring-cobalt-500"
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-300 mb-1 uppercase">Category *</label>
+              <label className="block text-xs text-slate-300 mb-1">Category *</label>
               <input
                 type="text"
                 required
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 placeholder="e.g. Electronics"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white focus:ring-2 focus:ring-cobalt-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs text-slate-300 mb-1 uppercase">Product Designation *</label>
+            <label className="block text-xs text-slate-300 mb-1">Product Name *</label>
             <input
               type="text"
               required
               value={formData.product_name}
               onChange={(e) => setFormData({ ...formData, product_name: e.target.value })}
-              placeholder="e.g. ARM Cortex IoT Board"
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:ring-2 focus:ring-emerald-500"
+              placeholder="e.g. Wireless Noise Canceling Headphones"
+              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white focus:ring-2 focus:ring-cobalt-500"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-slate-300 mb-1 uppercase">Unit Valuation ($) *</label>
+              <label className="block text-xs text-slate-300 mb-1">Unit Price ($) *</label>
               <input
                 type="number"
                 step="0.01"
@@ -309,17 +310,17 @@ const Products = () => {
                 value={formData.unit_price}
                 onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })}
                 placeholder="29.99"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white tabular-nums focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white tabular-nums focus:ring-2 focus:ring-cobalt-500"
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-300 mb-1 uppercase">Vendor Assignment</label>
+              <label className="block text-xs text-slate-300 mb-1">Supplier</label>
               <select
                 value={formData.supplier_id}
                 onChange={(e) => setFormData({ ...formData, supplier_id: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:ring-2 focus:ring-emerald-500"
+                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white focus:ring-2 focus:ring-cobalt-500"
               >
-                <option value="">No Vendor Assigned</option>
+                <option value="">No Supplier Assigned</option>
                 {suppliers.map((s) => (
                   <option key={s.supplier_id} value={s.supplier_id}>{s.supplier_name}</option>
                 ))}
@@ -329,10 +330,10 @@ const Products = () => {
 
           {!editingProduct && (
             <div className="pt-2 border-t border-slate-800">
-              <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider block mb-2">INITIAL STOCK BOUNDARIES</span>
+              <span className="text-[11px] font-semibold text-slate-300 uppercase tracking-wider block mb-2">Initial Stock Setup</span>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-[11px] text-slate-400 mb-1">Stock Baseline</label>
+                  <label className="block text-[11px] text-slate-400 mb-1">Initial Stock</label>
                   <input
                     type="number"
                     min="0"
@@ -352,7 +353,7 @@ const Products = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] text-slate-400 mb-1">Max Ceiling</label>
+                  <label className="block text-[11px] text-slate-400 mb-1">Max Capacity</label>
                   <input
                     type="number"
                     min="1"
@@ -369,16 +370,16 @@ const Products = () => {
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="px-3.5 py-2 rounded-lg border border-slate-700 text-xs font-mono text-slate-400 hover:text-white hover:bg-slate-800"
+              className="px-3.5 py-2 rounded-lg border border-slate-700 text-xs text-slate-400 hover:text-white hover:bg-slate-800"
             >
-              Abort
+              Cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-mono font-bold uppercase tracking-wider shadow-[0_0_12px_rgba(16,185,129,0.3)] disabled:opacity-50"
+              className="px-4 py-2 rounded-lg bg-cobalt-600 hover:bg-cobalt-500 text-white text-xs font-semibold shadow-[0_0_12px_rgba(8,100,232,0.3)] disabled:opacity-50"
             >
-              {submitting ? 'Writing to DB...' : editingProduct ? 'Commit Changes' : 'Enroll SKU'}
+              {submitting ? 'Saving...' : editingProduct ? 'Save Changes' : 'Create Product'}
             </button>
           </div>
         </form>

@@ -2,21 +2,21 @@ import React from 'react';
 
 const KPICard = ({ title, value, subtitle, icon: Icon, trend }) => {
   return (
-    <div className="relative group bg-[#0D131F]/90 backdrop-blur-md rounded-xl border border-slate-800 p-5 hover:border-slate-700 transition-all duration-300 overflow-hidden shadow-lg shadow-black/40">
-      {/* Top Subtle Neon Edge Line */}
-      <div className="absolute top-0 inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent group-hover:via-emerald-400 transition-all"></div>
-      
+    <div className="relative group bg-[#0E1522] rounded-xl border border-slate-800 p-5 hover:border-slate-700 transition-all shadow-md overflow-hidden">
+      {/* Top Cobalt Edge Accent */}
+      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cobalt to-transparent group-hover:via-neon transition-all duration-300"></div>
+
       <div className="flex items-center justify-between">
-        <span className="text-xs font-mono tracking-wider uppercase text-slate-400">{title}</span>
+        <span className="text-xs font-medium uppercase tracking-wider text-slate-400">{title}</span>
         {Icon && (
-          <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-emerald-400 group-hover:text-emerald-300 group-hover:border-emerald-500/30 transition-all shadow-inner">
+          <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-neon group-hover:text-neon group-hover:border-cobalt/50 transition-all">
             <Icon className="w-4 h-4" />
           </div>
         )}
       </div>
 
       <div className="mt-4">
-        <div className="text-2xl font-bold font-mono tracking-tight text-white tabular-nums drop-shadow-sm">
+        <div className="text-2xl font-bold tracking-tight text-white font-mono tabular-nums">
           {value}
         </div>
         {subtitle && (
