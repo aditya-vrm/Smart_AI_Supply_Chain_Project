@@ -30,7 +30,7 @@ const Forecasting = () => {
           setSelectedProductId(prodRes.data[0].product_id);
         }
         const histRes = await api.get('/forecasting/history');
-        setHistory(histRes.data);
+        setHistory(Array.isArray(histRes.data) ? histRes.data : []);
       } catch (err) {
         console.error('Failed to initialize forecasting:', err);
       }
@@ -53,7 +53,7 @@ const Forecasting = () => {
       });
       setForecastResult(res.data);
       const histRes = await api.get('/forecasting/history');
-      setHistory(histRes.data);
+      setHistory(Array.isArray(histRes.data) ? histRes.data : []);
     } catch (err) {
       setErrorMsg(err.response?.data?.detail || 'Failed to generate forecast.');
     } finally {
@@ -175,14 +175,14 @@ const Forecasting = () => {
             <div className="text-right self-end sm:self-auto font-mono">
               <span className="text-[11px] text-sand/70 uppercase tracking-wider block">Projected Total Demand</span>
               <span className="text-2xl font-bold text-sand-50 tabular-nums">
-                {forecastResult.models.find(m => m.model_name === forecastResult.recommended_model)?.predicted_qty.toLocaleString()} units
+                {(forecastResult.models?.find(m => m.model_name === forecastResult.recommended_model)?.predicted_qty ?? 0).toLocaleString()} units
               </span>
             </div>
           </div>
 
           {/* Model Comparison Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {forecastResult.models.map((model) => {
+            {forecastResult.models?.map((model) => {
               const isWinner = model.model_name === forecastResult.recommended_model;
               return (
                 <div
@@ -221,7 +221,7 @@ const Forecasting = () => {
                   <div className="flex items-center justify-between pt-2 border-t border-sand/15 text-xs">
                     <span className="text-sand/70">Total Horizon Prediction:</span>
                     <span className="font-mono font-bold text-sand-50 tabular-nums text-sm">
-                      {model.predicted_qty.toLocaleString()} units
+                      {(model.predicted_qty ?? 0).toLocaleString()} units
                     </span>
                   </div>
                 </div>
@@ -246,14 +246,14 @@ const Forecasting = () => {
 
             <div className="h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={forecastResult.chart_data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <LineChart data={forecastResult.chart_data || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(232, 220, 196, 0.1)" />
                   <XAxis 
                     dataKey="date" 
                     tickLine={false} 
                     axisLine={{ stroke: 'rgba(232, 220, 196, 0.2)' }} 
                     tick={{ fill: '#DAC9A8', fontSize: 10, fontFamily: 'monospace' }}
-                    tickFormatter={(val) => val.slice(5)}
+                    tickFormatter={(val) => val ? val.slice(5) : ''}
                   />
                   <YAxis 
                     tickLine={false} 
@@ -329,27 +329,27 @@ const Forecasting = () => {
                 {history.slice(0, 10).map((h) => (
                   <tr key={h.forecast_id} className="hover:bg-forest-850/50 transition-colors">
                     <td className="py-3 px-4 font-mono text-sand/60">
-                      {new Date(h.created_at).toLocaleDateString()}
+                      {h.created_at ? new Date(h.created_at).toLocaleDateString() : '—'}
                     </td>
                     <td className="py-3 px-4 font-mono font-bold text-sand-50">
-                      {h.product?.sku_code || 'N/A'}
+                      {h.product?.sku_code || h.sku_code || 'N/A'}
                     </td>
                     <td className="py-3 px-4 text-sand-50 font-medium">
-                      {h.product?.product_name || 'N/A'}
+                      {h.product?.product_name || h.product_name || 'N/A'}
                     </td>
                     <td className="py-3 px-4 text-center font-mono text-sand/80">
                       {h.horizon_days}d
                     </td>
                     <td className="py-3 px-4">
                       <span className="inline-block px-2.5 py-0.5 rounded-lg bg-purple/20 text-purple-light border border-purple/30 text-[11px] font-semibold">
-                        {h.model_name}
+                        {h.model_used || h.model_name || 'AI Model'}
                       </span>
                     </td>
                     <td className="py-3 px-4 text-right font-mono font-bold text-sand-50 tabular-nums">
-                      {h.predicted_quantity.toLocaleString()} units
+                      {(h.predicted_qty ?? h.predicted_quantity ?? 0).toLocaleString()} units
                     </td>
                     <td className="py-3 px-4 text-right font-mono font-bold text-sand/80 tabular-nums">
-                      {h.mape_score !== null ? `${h.mape_score}%` : '—'}
+                      {h.mape !== undefined && h.mape !== null ? `${h.mape}%` : (h.mape_score !== undefined && h.mape_score !== null ? `${h.mape_score}%` : '—')}
                     </td>
                   </tr>
                 ))}

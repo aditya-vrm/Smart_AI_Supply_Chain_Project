@@ -21,8 +21,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  Legend
+  Tooltip
 } from 'recharts';
 
 const Dashboard = () => {
@@ -77,7 +76,7 @@ const Dashboard = () => {
           <button
             onClick={fetchDashboardData}
             disabled={refreshing}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-sand/20 glass-card text-xs font-medium text-sand hover:text-sand-50 hover:border-sand/40 transition-all disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-sand/20 glass-card text-xs font-medium text-sand hover:text-sand-50 hover:border-sand/40 transition-all disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-purple' : 'text-sand/60'}`} />
             <span>Refresh</span>
@@ -101,21 +100,21 @@ const Dashboard = () => {
           icon={Package}
         />
         <KPICard
-          title="Inventory Value"
-          value={`$${(kpis.total_inventory_valuation || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-          subtitle="Warehouse holding value"
+          title="30-Day Revenue"
+          value={`$${(kpis.monthly_revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+          subtitle={`${(kpis.monthly_units_sold || 0).toLocaleString()} units transacted`}
           icon={DollarSign}
         />
         <KPICard
           title="Active Alerts"
-          value={kpis.active_alerts_count || 0}
-          subtitle="Items needing restock"
+          value={kpis.active_low_stock_alerts || 0}
+          subtitle={`${kpis.total_active_alerts || 0} total exceptions flagged`}
           icon={AlertTriangle}
         />
         <KPICard
-          title="Avg Forecast Accuracy"
-          value={kpis.avg_forecast_mape !== null ? `${kpis.avg_forecast_mape}% MAPE` : 'N/A'}
-          subtitle="Historical prediction accuracy"
+          title="Projected 30D Demand"
+          value={`${(kpis.next_30_days_forecast || 0).toLocaleString()} units`}
+          subtitle="AI Machine Learning Vector"
           icon={TrendingUp}
         />
       </div>
@@ -144,7 +143,7 @@ const Dashboard = () => {
 
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={charts.sales_trend || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={charts.historical_vs_forecast || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.4}/>
@@ -176,7 +175,7 @@ const Dashboard = () => {
                 />
                 <Area 
                   type="monotone" 
-                  dataKey="actual" 
+                  dataKey="historical_sales" 
                   name="Actual Sales" 
                   stroke="#8B5CF6" 
                   strokeWidth={2.5}
@@ -185,7 +184,7 @@ const Dashboard = () => {
                 />
                 <Area 
                   type="monotone" 
-                  dataKey="predicted" 
+                  dataKey="predicted_demand" 
                   name="Projected Demand" 
                   stroke="#E8DCC4" 
                   strokeWidth={2}
@@ -197,28 +196,35 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Top Selling Products (1 Col) */}
+        {/* Top Selling Categories BarChart (1 Col) */}
         <div className="glass-card rounded-2xl p-6 shadow-xl flex flex-col justify-between">
           <div>
             <h3 className="text-sm font-bold text-sand-50 mb-1">
-              Top Products by Volume
+              Top Categories by Revenue
             </h3>
-            <p className="text-xs text-sand/60 mb-4">Highest velocity stock units</p>
+            <p className="text-xs text-sand/60 mb-4">Gross sales revenue across product categories</p>
 
             <div className="h-60 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={charts.top_products || []} layout="vertical" margin={{ top: 5, right: 10, left: 15, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(232, 220, 196, 0.1)" />
-                  <XAxis type="number" hide />
-                  <YAxis 
-                    dataKey="name" 
-                    type="category" 
+                <BarChart data={charts.top_categories || []} margin={{ top: 10, right: 10, left: -10, bottom: 25 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(232, 220, 196, 0.1)" />
+                  <XAxis 
+                    dataKey="category" 
                     tickLine={false} 
                     axisLine={{ stroke: 'rgba(232, 220, 196, 0.2)' }} 
-                    tick={{ fill: '#E8DCC4', fontSize: 10 }}
-                    width={85}
+                    tick={{ fill: '#DAC9A8', fontSize: 10 }}
+                    interval={0}
+                    angle={-20}
+                    textAnchor="end"
+                  />
+                  <YAxis 
+                    tickLine={false} 
+                    axisLine={{ stroke: 'rgba(232, 220, 196, 0.2)' }} 
+                    tick={{ fill: '#DAC9A8', fontSize: 10, fontFamily: 'monospace' }}
+                    tickFormatter={(val) => `$${val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val}`}
                   />
                   <Tooltip 
+                    formatter={(value) => [`$${Number(value).toLocaleString()}`, 'Revenue']}
                     contentStyle={{ 
                       backgroundColor: '#14281D', 
                       borderRadius: '12px', 
@@ -227,7 +233,7 @@ const Dashboard = () => {
                       color: '#E8DCC4' 
                     }}
                   />
-                  <Bar dataKey="quantity" fill="#8B5CF6" radius={[0, 6, 6, 0]} />
+                  <Bar dataKey="total_revenue" name="Total Revenue ($)" fill="#8B5CF6" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -278,15 +284,15 @@ const Dashboard = () => {
                 {recentAlerts.map((alert) => (
                   <tr key={alert.alert_id} className="hover:bg-forest-850/50 transition-colors">
                     <td className="py-3 px-3 font-mono font-bold text-sand-50">
-                      {alert.product?.sku_code || 'N/A'}
+                      {alert.sku_code || alert.product?.sku_code || 'N/A'}
                     </td>
                     <td className="py-3 px-3 font-medium text-sand-50">
-                      {alert.product?.product_name || 'N/A'}
+                      {alert.product_name || alert.product?.product_name || 'N/A'}
                     </td>
                     <td className="py-3 px-3">
                       <StatusBadge status={alert.alert_type} />
                     </td>
-                    <td className="py-3 px-3 text-right font-mono font-bold text-purple-light">
+                    <td className="py-3 px-3 text-right font-mono font-bold text-rose-300">
                       {alert.recommended_qty > 0 ? `${alert.recommended_qty} units` : '—'}
                     </td>
                     <td className="py-3 px-3 text-sand/70 max-w-xs truncate">
