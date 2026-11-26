@@ -134,17 +134,17 @@ const Products = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-sand/15">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Package className="w-5 h-5 text-cobalt-400" />
+          <h2 className="text-xl font-bold text-sand-50 flex items-center gap-2">
+            <Package className="w-5 h-5 text-purple" />
             Product Catalog
           </h2>
-          <p className="text-xs text-slate-400 mt-1">Manage SKUs, unit pricing, categories, and supplier assignments</p>
+          <p className="text-xs text-sand/65 mt-1">Manage SKUs, unit pricing, categories, and supplier assignments</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cobalt-600 text-white text-xs font-semibold hover:bg-cobalt-500 transition-all shadow-[0_0_15px_rgba(8,100,232,0.3)] self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-purple text-white text-xs font-semibold hover:bg-purple-hover transition-all shadow-lg shadow-purple/30 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Add Product</span>
@@ -152,48 +152,48 @@ const Products = () => {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="bg-[#0E1522] p-4 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="glass-card p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
         <form onSubmit={handleSearchSubmit} className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" />
+          <Search className="w-4 h-4 absolute left-3 top-2.5 text-sand/50" />
           <input
             type="text"
             placeholder="Search SKU or product name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900 border border-slate-700/80 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+            className="w-full pl-9 pr-3 py-2 glass-input rounded-xl text-xs placeholder-sand/40 focus:outline-none"
           />
         </form>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <Filter className="w-4 h-4 text-slate-400 flex-shrink-0" />
-          <span className="text-xs text-slate-400">Category:</span>
+          <Filter className="w-4 h-4 text-purple flex-shrink-0" />
+          <span className="text-xs text-sand/70">Category:</span>
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-cobalt-500"
+            className="px-3 py-1.5 glass-input rounded-xl text-xs text-sand focus:outline-none"
           >
-            <option value="All">All Categories ({categories.length})</option>
+            <option value="All" className="bg-forest-900 text-sand">All Categories ({categories.length})</option>
             {categories.map((c) => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c} className="bg-forest-900 text-sand">{c}</option>
             ))}
           </select>
         </div>
       </div>
 
       {/* Products Table */}
-      <div className="bg-[#0E1522] rounded-xl border border-slate-800 overflow-hidden shadow-xl">
+      <div className="glass-card rounded-2xl overflow-hidden shadow-xl">
         {loading ? (
           <div className="flex items-center justify-center h-48">
-            <div className="w-8 h-8 border-2 border-cobalt-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-8 h-8 border-2 border-purple border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-12 text-slate-500 text-xs">
+          <div className="text-center py-12 text-sand/60 text-xs">
             No products found matching your search.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900/80 text-slate-400 border-b border-slate-800 uppercase tracking-wider text-[11px]">
+              <thead className="bg-forest-900/80 text-sand/70 border-b border-sand/10 uppercase tracking-wider text-[11px]">
                 <tr>
                   <th className="py-3 px-4">SKU Code</th>
                   <th className="py-3 px-4">Product Name</th>
@@ -203,38 +203,38 @@ const Products = () => {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-sans">
+              <tbody className="divide-y divide-sand/10 font-sans">
                 {products.map((p) => (
-                  <tr key={p.product_id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-4 font-mono font-bold text-neon tracking-wider">
+                  <tr key={p.product_id} className="hover:bg-forest-850/50 transition-colors">
+                    <td className="py-3.5 px-4 font-mono font-bold text-sand-50 tracking-wider">
                       {p.sku_code}
                     </td>
-                    <td className="py-3 px-4 font-medium text-white">
+                    <td className="py-3.5 px-4 font-medium text-sand-50">
                       {p.product_name}
                     </td>
-                    <td className="py-3 px-4">
-                      <span className="inline-block px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 text-[11px] border border-slate-700">
+                    <td className="py-3.5 px-4">
+                      <span className="inline-block px-2.5 py-0.5 rounded-lg bg-forest-900/80 text-sand/80 text-[11px] border border-sand/15">
                         {p.category}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right font-mono font-bold text-white">
+                    <td className="py-3.5 px-4 text-right font-mono font-bold text-sand-50">
                       ${p.unit_price.toFixed(2)}
                     </td>
-                    <td className="py-3 px-4 text-slate-400">
-                      {p.supplier?.supplier_name || <span className="text-slate-600 italic">None</span>}
+                    <td className="py-3.5 px-4 text-sand/70">
+                      {p.supplier?.supplier_name || <span className="text-sand/40 italic">None</span>}
                     </td>
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3.5 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => openEditModal(p)}
-                          className="p-1.5 rounded-md text-slate-400 hover:text-cobalt-400 hover:bg-slate-800 transition-colors"
+                          className="p-1.5 rounded-lg text-sand/60 hover:text-purple hover:bg-forest-850 transition-colors"
                           title="Edit Product"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDelete(p.product_id, p.sku_code)}
-                          className="p-1.5 rounded-md text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors"
+                          className="p-1.5 rounded-lg text-sand/60 hover:text-rose-400 hover:bg-forest-850 transition-colors"
                           title="Delete Product"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -256,7 +256,7 @@ const Products = () => {
         title={editingProduct ? `Edit Product: ${editingProduct.sku_code}` : 'Add New Product'}
       >
         {formError && (
-          <div className="mb-4 p-2.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs">
+          <div className="mb-4 p-2.5 rounded-xl bg-rose-950/70 border border-rose-500/40 text-rose-300 text-xs">
             {formError}
           </div>
         )}
@@ -264,44 +264,44 @@ const Products = () => {
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-slate-300 mb-1">SKU Code *</label>
+              <label className="block text-xs font-semibold text-sand/80 mb-1">SKU Code *</label>
               <input
                 type="text"
                 required
                 value={formData.sku_code}
                 onChange={(e) => setFormData({ ...formData, sku_code: e.target.value })}
                 placeholder="SKU-XXX-001"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white uppercase focus:ring-2 focus:ring-cobalt-500"
+                className="w-full px-3 py-2 glass-input rounded-xl text-xs font-mono uppercase focus:outline-none"
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-300 mb-1">Category *</label>
+              <label className="block text-xs font-semibold text-sand/80 mb-1">Category *</label>
               <input
                 type="text"
                 required
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                 placeholder="e.g. Electronics"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white focus:ring-2 focus:ring-cobalt-500"
+                className="w-full px-3 py-2 glass-input rounded-xl text-xs focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs text-slate-300 mb-1">Product Name *</label>
+            <label className="block text-xs font-semibold text-sand/80 mb-1">Product Name *</label>
             <input
               type="text"
               required
               value={formData.product_name}
               onChange={(e) => setFormData({ ...formData, product_name: e.target.value })}
               placeholder="e.g. Wireless Noise Canceling Headphones"
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white focus:ring-2 focus:ring-cobalt-500"
+              className="w-full px-3 py-2 glass-input rounded-xl text-xs focus:outline-none"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-slate-300 mb-1">Unit Price ($) *</label>
+              <label className="block text-xs font-semibold text-sand/80 mb-1">Unit Price ($) *</label>
               <input
                 type="number"
                 step="0.01"
@@ -310,74 +310,74 @@ const Products = () => {
                 value={formData.unit_price}
                 onChange={(e) => setFormData({ ...formData, unit_price: e.target.value })}
                 placeholder="29.99"
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white tabular-nums focus:ring-2 focus:ring-cobalt-500"
+                className="w-full px-3 py-2 glass-input rounded-xl text-xs font-mono tabular-nums focus:outline-none"
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-300 mb-1">Supplier</label>
+              <label className="block text-xs font-semibold text-sand/80 mb-1">Supplier</label>
               <select
                 value={formData.supplier_id}
                 onChange={(e) => setFormData({ ...formData, supplier_id: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white focus:ring-2 focus:ring-cobalt-500"
+                className="w-full px-3 py-2 glass-input rounded-xl text-xs focus:outline-none"
               >
-                <option value="">No Supplier Assigned</option>
+                <option value="" className="bg-forest-900 text-sand">No Supplier Assigned</option>
                 {suppliers.map((s) => (
-                  <option key={s.supplier_id} value={s.supplier_id}>{s.supplier_name}</option>
+                  <option key={s.supplier_id} value={s.supplier_id} className="bg-forest-900 text-sand">{s.supplier_name}</option>
                 ))}
               </select>
             </div>
           </div>
 
           {!editingProduct && (
-            <div className="pt-2 border-t border-slate-800">
-              <span className="text-[11px] font-semibold text-slate-300 uppercase tracking-wider block mb-2">Initial Stock Setup</span>
+            <div className="pt-2 border-t border-sand/15">
+              <span className="text-[11px] font-semibold text-sand/80 uppercase tracking-wider block mb-2">Initial Stock Setup</span>
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-[11px] text-slate-400 mb-1">Initial Stock</label>
+                  <label className="block text-[11px] text-sand/70 mb-1">Initial Stock</label>
                   <input
                     type="number"
                     min="0"
                     value={formData.initial_stock}
                     onChange={(e) => setFormData({ ...formData, initial_stock: e.target.value })}
-                    className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs text-white"
+                    className="w-full px-2.5 py-1.5 glass-input rounded-lg text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] text-slate-400 mb-1">Reorder Level</label>
+                  <label className="block text-[11px] text-sand/70 mb-1">Reorder Level</label>
                   <input
                     type="number"
                     min="1"
                     value={formData.reorder_level}
                     onChange={(e) => setFormData({ ...formData, reorder_level: e.target.value })}
-                    className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs text-white"
+                    className="w-full px-2.5 py-1.5 glass-input rounded-lg text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] text-slate-400 mb-1">Max Capacity</label>
+                  <label className="block text-[11px] text-sand/70 mb-1">Max Capacity</label>
                   <input
                     type="number"
                     min="1"
                     value={formData.max_stock}
                     onChange={(e) => setFormData({ ...formData, max_stock: e.target.value })}
-                    className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs text-white"
+                    className="w-full px-2.5 py-1.5 glass-input rounded-lg text-xs"
                   />
                 </div>
               </div>
             </div>
           )}
 
-          <div className="flex justify-end gap-2 pt-3 border-t border-slate-800">
+          <div className="flex justify-end gap-2 pt-3 border-t border-sand/15">
             <button
               type="button"
               onClick={() => setIsModalOpen(false)}
-              className="px-3.5 py-2 rounded-lg border border-slate-700 text-xs text-slate-400 hover:text-white hover:bg-slate-800"
+              className="px-3.5 py-2 rounded-xl border border-sand/20 text-xs text-sand/70 hover:text-sand-50 hover:bg-forest-850"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="px-4 py-2 rounded-lg bg-cobalt-600 hover:bg-cobalt-500 text-white text-xs font-semibold shadow-[0_0_12px_rgba(8,100,232,0.3)] disabled:opacity-50"
+              className="px-4 py-2 rounded-xl bg-purple hover:bg-purple-hover text-white text-xs font-semibold shadow-lg shadow-purple/30 disabled:opacity-50"
             >
               {submitting ? 'Saving...' : editingProduct ? 'Save Changes' : 'Create Product'}
             </button>

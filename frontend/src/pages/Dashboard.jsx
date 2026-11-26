@@ -10,7 +10,7 @@ import {
   TrendingUp, 
   ArrowRight, 
   RefreshCw,
-  Zap
+  Sparkles
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -49,9 +49,9 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-80 font-mono text-slate-400 gap-3">
-        <div className="w-8 h-8 border-2 border-cobalt border-t-transparent rounded-full animate-spin"></div>
-        <span className="text-xs uppercase">Loading Dashboard Data...</span>
+      <div className="flex flex-col items-center justify-center h-80 font-mono text-sand/60 gap-3">
+        <div className="w-8 h-8 border-2 border-purple border-t-transparent rounded-full animate-spin"></div>
+        <span className="text-xs uppercase tracking-wider">Loading Dashboard Data...</span>
       </div>
     );
   }
@@ -63,12 +63,12 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Page Title & Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-sand/15">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+          <h2 className="text-xl font-bold tracking-tight text-sand-50 flex items-center gap-2">
             Supply Chain Dashboard
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-sand/65 mt-1">
             Real-time stock monitoring, revenue metrics, and demand forecasting
           </p>
         </div>
@@ -77,16 +77,16 @@ const Dashboard = () => {
           <button
             onClick={fetchDashboardData}
             disabled={refreshing}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-800 bg-[#0E1522] text-xs font-medium text-slate-300 hover:text-white hover:border-slate-700 transition-all disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-sand/20 glass-card text-xs font-medium text-sand hover:text-sand-50 hover:border-sand/40 transition-all disabled:opacity-50"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-neon' : 'text-slate-400'}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-purple' : 'text-sand/60'}`} />
             <span>Refresh</span>
           </button>
           <Link
             to="/forecasting"
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-cobalt hover:bg-cobalt-hover text-white text-xs font-semibold transition-all shadow-md shadow-cobalt/30"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-purple hover:bg-purple-hover text-white text-xs font-semibold transition-all shadow-md shadow-purple/30"
           >
-            <TrendingUp className="w-3.5 h-3.5 text-neon" />
+            <TrendingUp className="w-3.5 h-3.5" />
             <span>Run Forecast</span>
           </Link>
         </div>
@@ -101,197 +101,195 @@ const Dashboard = () => {
           icon={Package}
         />
         <KPICard
-          title="Monthly Revenue"
-          value={`$${(kpis.monthly_revenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-          subtitle={`${(kpis.monthly_units_sold || 0).toLocaleString()} units sold (last 30d)`}
+          title="Inventory Value"
+          value={`$${(kpis.total_inventory_valuation || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+          subtitle="Warehouse holding value"
           icon={DollarSign}
         />
         <KPICard
-          title="Active Stock Alerts"
-          value={kpis.active_low_stock_alerts || 0}
-          subtitle={`${kpis.total_active_alerts || 0} total alerts flagged`}
+          title="Active Alerts"
+          value={kpis.active_alerts_count || 0}
+          subtitle="Items needing restock"
           icon={AlertTriangle}
         />
         <KPICard
-          title="Next 30-Day Demand"
-          value={`${(kpis.next_30_days_forecast || 0).toLocaleString()} units`}
-          subtitle="Forecasted requirement"
+          title="Avg Forecast Accuracy"
+          value={kpis.avg_forecast_mape !== null ? `${kpis.avg_forecast_mape}% MAPE` : 'N/A'}
+          subtitle="Historical prediction accuracy"
           icon={TrendingUp}
         />
       </div>
 
-      {/* Visual Analytics Grid */}
+      {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Continuous Demand Line/Area Chart with Cobalt Blue & Neon Yellow */}
-        <div className="lg:col-span-2 bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl">
-          <div className="flex items-center justify-between mb-5">
+        {/* Main Demand Trend (2 Cols) */}
+        <div className="lg:col-span-2 glass-card rounded-2xl p-6 shadow-xl relative overflow-hidden">
+          <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-                Sales History vs. Predicted Demand
+              <h3 className="text-sm font-bold text-sand-50 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-purple"></span>
+                Sales Trend & Projected Demand
               </h3>
-              <p className="text-xs text-slate-400 mt-0.5">30-day historical unit volume vs. forward projection curve</p>
+              <p className="text-xs text-sand/60 mt-0.5">Historical sales alongside ML predicted forecast curve</p>
             </div>
-            <span className="text-[11px] font-mono text-neon bg-slate-900 border border-slate-700 px-2.5 py-0.5 rounded-md">
-              Daily Volume
-            </span>
+            <div className="flex items-center gap-3 text-xs">
+              <span className="flex items-center gap-1.5 text-sand/70">
+                <span className="w-3 h-1 bg-purple rounded"></span> Actual
+              </span>
+              <span className="flex items-center gap-1.5 text-sand/70">
+                <span className="w-3 h-1 bg-sand border-b border-dashed border-sand"></span> Projected
+              </span>
+            </div>
           </div>
 
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={charts.historical_vs_forecast || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={charts.sales_trend || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
-                  <linearGradient id="cobaltGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0864E8" stopOpacity={0.4}/>
-                    <stop offset="95%" stopColor="#0864E8" stopOpacity={0.0}/>
-                  </linearGradient>
-                  <linearGradient id="neonGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#F5FF00" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#F5FF00" stopOpacity={0.0}/>
+                  <linearGradient id="purpleGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.4}/>
+                    <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1F2C42" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(232, 220, 196, 0.1)" />
                 <XAxis 
                   dataKey="date" 
                   tickLine={false} 
-                  axisLine={{ stroke: '#334460' }} 
-                  tick={{ fill: '#94A3B8', fontSize: 10, fontFamily: 'monospace' }}
-                  tickFormatter={(val) => val.slice(5)}
+                  axisLine={{ stroke: 'rgba(232, 220, 196, 0.2)' }} 
+                  tick={{ fill: '#DAC9A8', fontSize: 11, fontFamily: 'monospace' }}
+                  tickFormatter={(val) => val ? val.slice(5) : ''}
                 />
                 <YAxis 
                   tickLine={false} 
-                  axisLine={{ stroke: '#334460' }} 
-                  tick={{ fill: '#94A3B8', fontSize: 10, fontFamily: 'monospace' }}
+                  axisLine={{ stroke: 'rgba(232, 220, 196, 0.2)' }} 
+                  tick={{ fill: '#DAC9A8', fontSize: 11, fontFamily: 'monospace' }}
                 />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#0E1522', borderRadius: '8px', border: '1px solid #1F2C42', fontSize: '11px', color: '#F8FAFC' }}
-                />
-                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
-                <Area 
-                  type="monotone" 
-                  dataKey="historical_sales" 
-                  name="Historical Sales (Units)" 
-                  stroke="#0864E8" 
-                  strokeWidth={2.5}
-                  fillOpacity={1}
-                  fill="url(#cobaltGradient)"
-                  dot={{ r: 2, fill: '#0864E8' }}
+                  contentStyle={{ 
+                    backgroundColor: '#14281D', 
+                    borderRadius: '12px', 
+                    border: '1px solid rgba(232, 220, 196, 0.2)', 
+                    fontSize: '11px', 
+                    fontFamily: 'monospace',
+                    color: '#E8DCC4' 
+                  }}
                 />
                 <Area 
                   type="monotone" 
-                  dataKey="predicted_demand" 
-                  name="Projected Demand (Units)" 
-                  stroke="#F5FF00" 
+                  dataKey="actual" 
+                  name="Actual Sales" 
+                  stroke="#8B5CF6" 
                   strokeWidth={2.5}
+                  fillOpacity={1} 
+                  fill="url(#purpleGradient)" 
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="predicted" 
+                  name="Projected Demand" 
+                  stroke="#E8DCC4" 
+                  strokeWidth={2}
                   strokeDasharray="4 4"
-                  fillOpacity={1}
-                  fill="url(#neonGradient)"
-                  dot={false}
+                  fill="none" 
                 />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Category Revenue Distribution (Cobalt Blue Bars) */}
-        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl">
-          <div className="flex items-center justify-between mb-5">
-            <div>
-              <h3 className="text-sm font-bold text-white tracking-tight">
-                Top Categories by Revenue
-              </h3>
-              <p className="text-xs text-slate-400 mt-0.5">Aggregate catalog sales</p>
+        {/* Top Selling Products (1 Col) */}
+        <div className="glass-card rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+          <div>
+            <h3 className="text-sm font-bold text-sand-50 mb-1">
+              Top Products by Volume
+            </h3>
+            <p className="text-xs text-sand/60 mb-4">Highest velocity stock units</p>
+
+            <div className="h-60 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={charts.top_products || []} layout="vertical" margin={{ top: 5, right: 10, left: 15, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(232, 220, 196, 0.1)" />
+                  <XAxis type="number" hide />
+                  <YAxis 
+                    dataKey="name" 
+                    type="category" 
+                    tickLine={false} 
+                    axisLine={{ stroke: 'rgba(232, 220, 196, 0.2)' }} 
+                    tick={{ fill: '#E8DCC4', fontSize: 10 }}
+                    width={85}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#14281D', 
+                      borderRadius: '12px', 
+                      border: '1px solid rgba(232, 220, 196, 0.2)', 
+                      fontSize: '11px', 
+                      color: '#E8DCC4' 
+                    }}
+                  />
+                  <Bar dataKey="quantity" fill="#8B5CF6" radius={[0, 6, 6, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
-          <div className="h-72 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={charts.top_categories || []} margin={{ top: 10, right: 10, left: -15, bottom: 25 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#1F2C42" />
-                <XAxis 
-                  dataKey="category" 
-                  tickLine={false} 
-                  axisLine={{ stroke: '#334460' }} 
-                  tick={{ fill: '#94A3B8', fontSize: 9 }}
-                  interval={0}
-                  angle={-20}
-                  textAnchor="end"
-                />
-                <YAxis 
-                  tickLine={false} 
-                  axisLine={{ stroke: '#334460' }} 
-                  tick={{ fill: '#94A3B8', fontSize: 10, fontFamily: 'monospace' }}
-                  tickFormatter={(val) => `$${val > 1000 ? (val / 1000).toFixed(0) + 'k' : val}`}
-                />
-                <Tooltip 
-                  formatter={(value) => [`$${Number(value).toLocaleString()}`, 'Revenue']}
-                  contentStyle={{ backgroundColor: '#0E1522', borderRadius: '8px', border: '1px solid #1F2C42', fontSize: '11px', color: '#F8FAFC' }}
-                />
-                <Bar 
-                  dataKey="total_revenue" 
-                  name="Revenue ($)" 
-                  fill="#0864E8" 
-                  radius={[4, 4, 0, 0]} 
-                />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="pt-3 border-t border-sand/15 text-center">
+            <Link to="/products" className="text-xs text-purple-light hover:text-white font-medium inline-flex items-center gap-1">
+              <span>View complete product catalog</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Active Alerts Table */}
-      <div className="bg-[#0E1522] rounded-xl border border-slate-800 p-6 shadow-xl">
-        <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+      {/* Stock Health & Recent Alerts */}
+      <div className="glass-card rounded-2xl p-6 shadow-xl">
+        <div className="flex items-center justify-between mb-4 pb-2 border-b border-sand/15">
           <div>
-            <h3 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-rose-400" />
-              Active Stock Alerts
+            <h3 className="text-sm font-bold text-sand-50 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-purple" />
+              Recent Restock Alerts
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">Items requiring reorder attention based on forecasted demand</p>
+            <p className="text-xs text-sand/60 mt-0.5">Items flagged by the automated inventory replenishment engine</p>
           </div>
-          <Link
-            to="/alerts"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-neon hover:underline"
-          >
-            View all alerts
-            <ArrowRight className="w-3.5 h-3.5" />
+          <Link to="/alerts" className="text-xs text-purple-light hover:text-white font-medium inline-flex items-center gap-1">
+            <span>View all alerts</span>
+            <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
 
         {recentAlerts.length === 0 ? (
-          <div className="text-center py-8 text-xs text-slate-500">
-            No active alerts detected. All warehouse stock is at optimal levels.
+          <div className="text-center py-8 text-sand/60 text-xs">
+            No active restock alerts. Inventory levels are optimal.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900 text-slate-400 border-y border-slate-800">
+              <thead className="bg-forest-900/60 text-sand/70 uppercase tracking-wider text-[11px] border-b border-sand/10">
                 <tr>
-                  <th className="py-2.5 px-4 font-medium">Product / SKU</th>
-                  <th className="py-2.5 px-4 font-medium">Alert Type</th>
-                  <th className="py-2.5 px-4 font-medium">Recommended Action</th>
-                  <th className="py-2.5 px-4 font-medium">Details</th>
+                  <th className="py-2.5 px-3">SKU</th>
+                  <th className="py-2.5 px-3">Product Name</th>
+                  <th className="py-2.5 px-3">Status</th>
+                  <th className="py-2.5 px-3 text-right">Recommended Reorder</th>
+                  <th className="py-2.5 px-3">Message</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-sand/10 font-sans">
                 {recentAlerts.map((alert) => (
-                  <tr key={alert.alert_id} className="hover:bg-slate-800/40 transition-colors">
-                    <td className="py-3 px-4 text-white">
-                      <div className="font-semibold">{alert.product_name}</div>
-                      <div className="text-[11px] text-slate-400 font-mono">{alert.sku_code}</div>
+                  <tr key={alert.alert_id} className="hover:bg-forest-850/50 transition-colors">
+                    <td className="py-3 px-3 font-mono font-bold text-sand-50">
+                      {alert.product?.sku_code || 'N/A'}
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-3 font-medium text-sand-50">
+                      {alert.product?.product_name || 'N/A'}
+                    </td>
+                    <td className="py-3 px-3">
                       <StatusBadge status={alert.alert_type} />
                     </td>
-                    <td className="py-3 px-4">
-                      {alert.recommended_qty > 0 ? (
-                        <span className="font-bold text-rose-400 font-mono tabular-nums">
-                          Reorder +{alert.recommended_qty} units
-                        </span>
-                      ) : (
-                        <span className="text-slate-400">Hold Purchasing</span>
-                      )}
+                    <td className="py-3 px-3 text-right font-mono font-bold text-purple-light">
+                      {alert.recommended_qty > 0 ? `${alert.recommended_qty} units` : '—'}
                     </td>
-                    <td className="py-3 px-4 text-slate-400 max-w-md truncate">
+                    <td className="py-3 px-3 text-sand/70 max-w-xs truncate">
                       {alert.message}
                     </td>
                   </tr>

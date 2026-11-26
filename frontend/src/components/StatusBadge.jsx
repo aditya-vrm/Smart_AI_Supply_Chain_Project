@@ -5,7 +5,7 @@ const StatusBadge = ({ status }) => {
   
   if (norm === 'OPTIMAL' || norm === 'OPTIMAL_STOCK' || norm === 'RESOLVED') {
     return (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-950/70 text-emerald-400 border border-emerald-500/30">
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-950/60 text-emerald-300 border border-emerald-500/30">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5"></span>
         {norm === 'RESOLVED' ? 'Resolved' : 'Optimal'}
       </span>
@@ -14,7 +14,7 @@ const StatusBadge = ({ status }) => {
   
   if (norm === 'LOW_STOCK' || norm === 'CRITICAL' || norm === 'ACTIVE') {
     return (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-950/70 text-rose-400 border border-rose-500/30">
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-950/60 text-rose-300 border border-rose-500/30">
         <span className="w-1.5 h-1.5 rounded-full bg-rose-400 mr-1.5 animate-pulse"></span>
         {norm === 'ACTIVE' ? 'Active Alert' : 'Low Stock'}
       </span>
@@ -23,7 +23,7 @@ const StatusBadge = ({ status }) => {
 
   if (norm === 'OVERSTOCK' || norm === 'WARNING') {
     return (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-950/70 text-amber-400 border border-amber-500/30">
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-950/60 text-amber-300 border border-amber-500/30">
         <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5"></span>
         Overstock
       </span>
@@ -31,7 +31,7 @@ const StatusBadge = ({ status }) => {
   }
 
   return (
-    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-forest-900 text-sand/80 border border-sand/20">
       {status || 'Unknown'}
     </span>
   );

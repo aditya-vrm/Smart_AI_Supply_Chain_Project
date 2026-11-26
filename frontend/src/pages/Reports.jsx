@@ -62,71 +62,71 @@ const Reports = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-sand/15">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <FileText className="w-5 h-5 text-cobalt-400" />
+          <h2 className="text-xl font-bold text-sand-50 flex items-center gap-2">
+            <FileText className="w-5 h-5 text-purple" />
             Reports & Analytics
           </h2>
-          <p className="text-xs text-slate-400 mt-1">Export formatted Excel workbooks and executive PDF intelligence briefs</p>
+          <p className="text-xs text-sand/65 mt-1">Export formatted Excel workbooks and executive PDF intelligence briefs</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={handleDownloadExcel}
             disabled={downloadingExcel}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cobalt-600/20 text-cobalt-300 border border-cobalt-500/40 text-xs font-semibold hover:bg-cobalt-600/30 transition-all shadow-[0_0_15px_rgba(8,100,232,0.2)] disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-purple/15 text-purple-light border border-purple/40 text-xs font-semibold hover:bg-purple/25 transition-all shadow-md shadow-purple/10 disabled:opacity-50"
           >
-            <FileSpreadsheet className="w-4 h-4 text-neon" />
-            {downloadingExcel ? 'Exporting XLSX...' : 'Export Excel (.xlsx)'}
+            <FileSpreadsheet className="w-4 h-4 text-purple" />
+            <span>{downloadingExcel ? 'Exporting XLSX...' : 'Export Excel (.xlsx)'}</span>
           </button>
           <button
             onClick={handleDownloadPdf}
             disabled={downloadingPdf}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cobalt-600 text-white text-xs font-semibold hover:bg-cobalt-500 transition-all shadow-[0_0_15px_rgba(8,100,232,0.3)] disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-purple text-white text-xs font-semibold hover:bg-purple-hover transition-all shadow-lg shadow-purple/30 disabled:opacity-50"
           >
             <FileText className="w-4 h-4" />
-            {downloadingPdf ? 'Exporting PDF...' : 'Export PDF (.pdf)'}
+            <span>{downloadingPdf ? 'Exporting PDF...' : 'Export PDF (.pdf)'}</span>
           </button>
         </div>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Inventory Valuation</span>
-          <span className="text-2xl font-mono font-bold text-neon tabular-nums mt-2 block">
+        <div className="glass-card p-6 rounded-2xl shadow-xl">
+          <span className="text-xs font-semibold text-sand/70 uppercase tracking-wider block">Inventory Valuation</span>
+          <span className="text-2xl font-mono font-bold text-sand-50 tabular-nums mt-2 block">
             ${summary ? summary.total_valuation.toLocaleString(undefined, { minimumFractionDigits: 2 }) : '0.00'}
           </span>
-          <span className="text-[11px] text-slate-400 mt-1 block">Live warehouse stock value</span>
+          <span className="text-[11px] text-sand/60 mt-1 block">Live warehouse stock value</span>
         </div>
 
-        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Gross Sales Revenue</span>
-          <span className="text-2xl font-mono font-bold text-white tabular-nums mt-2 block">
+        <div className="glass-card p-6 rounded-2xl shadow-xl">
+          <span className="text-xs font-semibold text-sand/70 uppercase tracking-wider block">Gross Sales Revenue</span>
+          <span className="text-2xl font-mono font-bold text-sand-50 tabular-nums mt-2 block">
             ${summary ? summary.total_sales_revenue.toLocaleString(undefined, { minimumFractionDigits: 2 }) : '0.00'}
           </span>
-          <span className="text-[11px] text-cobalt-400 mt-1 block">
+          <span className="text-[11px] text-purple-light mt-1 block">
             Across {summary?.total_units_sold.toLocaleString()} units transacted
           </span>
         </div>
 
-        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">AI Forecast Quality</span>
+        <div className="glass-card p-6 rounded-2xl shadow-xl">
+          <span className="text-xs font-semibold text-sand/70 uppercase tracking-wider block">AI Forecast Quality</span>
           <div className="flex items-center gap-4 mt-2 font-mono">
             <div>
-              <span className="text-[11px] text-slate-500 block uppercase">MEAN MAE</span>
-              <span className="text-lg font-bold text-white tabular-nums">
+              <span className="text-[11px] text-sand/60 block uppercase">MEAN MAE</span>
+              <span className="text-lg font-bold text-sand-50 tabular-nums">
                 {summary?.forecast_accuracy?.avg_mae || '0.00'}
               </span>
             </div>
             <div>
-              <span className="text-[11px] text-slate-500 block uppercase">MEAN MAPE</span>
-              <span className="text-lg font-bold text-neon tabular-nums">
+              <span className="text-[11px] text-sand/60 block uppercase">MEAN MAPE</span>
+              <span className="text-lg font-bold text-purple-light tabular-nums">
                 {summary?.forecast_accuracy?.avg_mape || '0.00'}%
               </span>
             </div>
           </div>
-          <span className="text-[11px] text-slate-400 mt-1 block">
+          <span className="text-[11px] text-sand/60 mt-1 block">
             Across {summary?.forecast_accuracy?.total_evaluations} ML evaluation runs
           </span>
         </div>
@@ -134,18 +134,18 @@ const Reports = () => {
 
       {/* Export Format Panels */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl flex flex-col justify-between">
+        <div className="glass-card p-6 rounded-2xl shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="p-2.5 rounded-lg bg-cobalt-600/20 text-cobalt-400 border border-cobalt-500/30">
-                <FileSpreadsheet className="w-5 h-5 text-neon" />
+              <div className="p-2.5 rounded-xl bg-purple/20 text-purple border border-purple/30">
+                <FileSpreadsheet className="w-5 h-5 text-purple" />
               </div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Excel Workbook (.xlsx)</h3>
+              <h3 className="text-sm font-bold text-sand-50 uppercase tracking-wider">Excel Workbook (.xlsx)</h3>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-sand/70 leading-relaxed">
               Automated multi-sheet spreadsheet report generated via <code>openpyxl</code>:
             </p>
-            <ul className="list-disc pl-5 mt-2 space-y-1 text-xs text-slate-300">
+            <ul className="list-disc pl-5 mt-2 space-y-1 text-xs text-sand/80">
               <li>Executive Summary with operational metrics and KPI benchmarks</li>
               <li>Inventory Valuation breakdown with health status indicators</li>
               <li>Active stock alerts and exact algorithmic reorder volumes</li>
@@ -154,25 +154,25 @@ const Reports = () => {
           <button
             onClick={handleDownloadExcel}
             disabled={downloadingExcel}
-            className="mt-6 w-full py-2.5 px-3 rounded-lg border border-cobalt-500/40 bg-cobalt-950/20 text-xs font-semibold uppercase tracking-wider text-cobalt-300 hover:bg-cobalt-900/40 flex items-center justify-center gap-2 transition-all"
+            className="mt-6 w-full py-2.5 px-3 rounded-xl border border-purple/40 bg-purple/15 text-xs font-semibold uppercase tracking-wider text-purple-light hover:bg-purple/25 flex items-center justify-center gap-2 transition-all shadow-sm"
           >
-            <Download className="w-4 h-4 text-neon" />
-            Download Excel Spreadsheet
+            <Download className="w-4 h-4 text-purple" />
+            <span>Download Excel Spreadsheet</span>
           </button>
         </div>
 
-        <div className="bg-[#0E1522] p-6 rounded-xl border border-slate-800 shadow-xl flex flex-col justify-between">
+        <div className="glass-card p-6 rounded-2xl shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <div className="p-2.5 rounded-lg bg-cobalt-600/20 text-cobalt-400 border border-cobalt-500/30">
-                <FileText className="w-5 h-5 text-cobalt-400" />
+              <div className="p-2.5 rounded-xl bg-purple/20 text-purple border border-purple/30">
+                <FileText className="w-5 h-5 text-purple" />
               </div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider">Executive PDF Report (.pdf)</h3>
+              <h3 className="text-sm font-bold text-sand-50 uppercase tracking-wider">Executive PDF Report (.pdf)</h3>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-sand/70 leading-relaxed">
               Printable PDF document compiled via <code>reportlab</code>:
             </p>
-            <ul className="list-disc pl-5 mt-2 space-y-1 text-xs text-slate-300">
+            <ul className="list-disc pl-5 mt-2 space-y-1 text-xs text-sand/80">
               <li>Comprehensive operational summary and executive KPIs</li>
               <li>Stock reorder recommendations with supplier details</li>
               <li>Category valuation breakdown and inventory health overview</li>
@@ -181,10 +181,10 @@ const Reports = () => {
           <button
             onClick={handleDownloadPdf}
             disabled={downloadingPdf}
-            className="mt-6 w-full py-2.5 px-3 rounded-lg bg-cobalt-600 hover:bg-cobalt-500 text-xs font-semibold uppercase tracking-wider text-white flex items-center justify-center gap-2 transition-all shadow-[0_0_12px_rgba(8,100,232,0.3)]"
+            className="mt-6 w-full py-2.5 px-3 rounded-xl bg-purple hover:bg-purple-hover text-xs font-semibold uppercase tracking-wider text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-purple/30"
           >
             <Download className="w-4 h-4" />
-            Download PDF Report
+            <span>Download PDF Report</span>
           </button>
         </div>
       </div>

@@ -8,27 +8,31 @@ export default {
   theme: {
     extend: {
       colors: {
-        neon: {
-          DEFAULT: '#F5FF00',
-          hover: '#E5EE00',
-          light: '#F8FF4D',
-          dark: '#C8D100',
+        forest: {
+          DEFAULT: '#1F3D2B',
+          950: '#0E1D14',
+          900: '#14281D',
+          850: '#1A3324',
+          800: '#1F3D2B',
+          750: '#264A35',
+          700: '#2C573E',
+          600: '#396E4F',
         },
-        cobalt: {
-          DEFAULT: '#0864E8',
-          hover: '#0650BA',
-          light: '#3385F5',
-          dark: '#053C8D',
+        sand: {
+          DEFAULT: '#E8DCC4',
+          50: '#FAF7F0',
+          100: '#F5EEDB',
+          200: '#E8DCC4',
+          300: '#D8C6A3',
+          400: '#C2AC82',
+          500: '#A68D5F',
         },
-        dark: {
-          950: '#06090E',
-          900: '#0A0F18',
-          850: '#0E1522',
-          800: '#141D2D',
-          750: '#1A253A',
-          700: '#22324C',
-          600: '#334766',
-        }
+        purple: {
+          DEFAULT: '#8B5CF6',
+          hover: '#7C3AED',
+          light: '#A78BFA',
+          dark: '#6D28D9',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
